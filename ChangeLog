@@ -1,0 +1,3 @@
+2019-04-29  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
+	* TM-5 - Migrate the citron index-redirector lambda functions away from node.js 6.10
+
