@@ -34,6 +34,10 @@ resource "aws_cloudfront_distribution" "distribution" {
       event_type = "origin-request"
       lambda_arn = "${aws_lambda_function.redirector.qualified_arn}"
     }
+    lambda_function_association {
+      event_type = "origin-response"
+      lambda_arn = "${aws_lambda_function.security_headers.qualified_arn}"
+    }
     max_ttl                 = 86400
     min_ttl                 = 0
     target_origin_id        = "${var.distribution_name}"
@@ -45,11 +49,6 @@ resource "aws_cloudfront_distribution" "distribution" {
   ]
   enabled                 = true
   is_ipv6_enabled         = true
-  lifecycle {
-    ignore_changes = [
-      "default_cache_behavior"
-    ]
-  }
   logging_config {
     bucket          = "${data.aws_s3_bucket.log_bucket.bucket_domain_name}"
     include_cookies = false
