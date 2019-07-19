@@ -1,3 +1,5 @@
+1.0.17
+==========
 2019-07-19  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
 	* TM-13 - Enable HSTS on our CloudFront distributions
 
