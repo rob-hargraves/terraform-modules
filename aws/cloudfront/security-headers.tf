@@ -44,7 +44,10 @@ resource "aws_lambda_function" "security_headers" {
   handler           = "function.handler"
   lifecycle {
     ignore_changes = [
-      "filename"
+      "filename",
+      "last_modified",
+      "qualified_arn",
+      "version"
     ]
   }
   publish           = true
