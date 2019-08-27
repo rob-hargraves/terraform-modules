@@ -46,14 +46,14 @@ resource "aws_lambda_function" "redirector" {
   filename          = "${path.module}/default-index-redirect/function.zip"
   function_name     = "${var.distribution_name}-default-index-redirector"
   handler           = "function.handler"
-  lifecycle {
-    ignore_changes = [
-      "filename",
-      "last_modified",
-      "qualified_arn",
-      "version"
-    ]
-  }
+  # lifecycle {
+  #   ignore_changes = [
+  #     "filename",
+  #     "last_modified",
+  #     "qualified_arn",
+  #     "version"
+  #   ]
+  # }
   publish           = true
   role              = "${aws_iam_role.redirector.arn}"
   runtime           = "nodejs8.10"
