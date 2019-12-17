@@ -1,3 +1,6 @@
+2019-12-17  Marcus Dillavou <marcus.dillavou@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
+	* TM-25 - Revert HSTS on CloudFront Distributions
+
 1.0.17
 ==========
 2019-07-19  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
