@@ -23,6 +23,7 @@ resource "aws_cloudfront_distribution" "distribution" {
       "HEAD",
       "GET"
     ]
+    compress                = "${var.compress}"
     default_ttl             = 3600
     forwarded_values {
       cookies {
