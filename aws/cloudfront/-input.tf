@@ -16,6 +16,11 @@ variable "comment" {
   type    = "string"
 }
 
+variable "compress" {
+  default = false
+  type    = "string"
+}
+
 variable "custom_error_responses" {
   default = []
   type    = "list"
