@@ -1,3 +1,5 @@
+1.0.20
+==========
 2020-03-09  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
 	* TM-29 - Fix the default bucket name for new Cloudfront distributions
 
