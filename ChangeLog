@@ -1,3 +1,13 @@
+1.0.21
+==========
+2020-03-11  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
+	* TM-30 - In the Quinovas cloudfront module, update the default-index-redirect lambda function to nodejs12.x
+
+1.0.20
+==========
+2020-03-09  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
+	* TM-29 - Fix the default bucket name for new Cloudfront distributions
+
 1.0.19
 ==========
 2020-01-17  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
