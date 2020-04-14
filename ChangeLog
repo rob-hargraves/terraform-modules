@@ -1,3 +1,5 @@
+1.0.23
+==========
 2020-04-14  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
 	* TM-36 - DDB: events table's GSI should scale with table
 
