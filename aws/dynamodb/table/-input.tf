@@ -29,6 +29,11 @@ variable "name" {
   type = "string"
 }
 
+variable "pitr_enabled" {
+  default = "true"
+  type = "string"
+}
+
 variable "read_capacity" {
   default = {
     max = 1

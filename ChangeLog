@@ -1,3 +1,6 @@
+2020-05-26  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
+	* TM-43 - Add point-in-time recovery option to the dynamodb config
+
 1.0.23
 ==========
 2020-04-14  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>

@@ -20,6 +20,9 @@ resource "aws_dynamodb_table" "table" {
     "${var.local_secondary_indexes}"
   ]
   name                    = "${var.name}"
+  point_in_time_recovery {
+    enabled = "${var.pitr_enabled}"
+  }
   range_key               = "${var.range_key}"
   read_capacity           = "${var.read_capacity["min"]}"
   server_side_encryption {
