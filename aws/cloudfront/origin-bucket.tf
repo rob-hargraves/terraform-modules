@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "origin" {
   bucket = "${local.bucket_name}"
+  cors_rule = "${var.origin_bucket_cors}"
   lifecycle {
     prevent_destroy = true
   }

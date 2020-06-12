@@ -44,6 +44,11 @@ variable "ordered_cache_behaviors" {
   type    = "list"
 }
 
+variable "origin_bucket_cors" {
+  default = []
+  type    = "list"
+}
+
 variable "price_class" {
   default = "PriceClass_100"
   type    = "string"
