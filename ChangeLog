@@ -1,3 +1,5 @@
+1.0.25
+==========
 2020-06-12  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
 	* TM-46 - Allow an optional CORS policy for the cloudfront origin S3 bucket
 
