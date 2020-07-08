@@ -6,6 +6,11 @@ variable "autoscaling_service_role_arn" {
   type = "string"
 }
 
+variable "billing_mode" {
+  default = "PROVISIONED"
+  type    = "string"
+}
+
 variable "global_secondary_indexes" {
   default = []
   type    = "list"
