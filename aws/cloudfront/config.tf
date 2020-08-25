@@ -59,13 +59,16 @@ resource "aws_cloudfront_distribution" "distribution" {
   ordered_cache_behavior  = [
     "${var.ordered_cache_behaviors}"
   ]
-  origin {
-    domain_name = "${aws_s3_bucket.origin.bucket_domain_name}"
-    origin_id   = "${var.distribution_name}"
-    s3_origin_config {
-      origin_access_identity = "${aws_cloudfront_origin_access_identity.origin.cloudfront_access_identity_path}"
-    }
-  }
+  origin = [
+    {
+      domain_name = "${aws_s3_bucket.origin.bucket_domain_name}"
+      origin_id   = "${var.distribution_name}"
+      s3_origin_config {
+        origin_access_identity = "${aws_cloudfront_origin_access_identity.origin.cloudfront_access_identity_path}"
+      }
+    },
+    "${var.extra_origins}"
+  ]
   price_class             = "${var.price_class}"
   restrictions {
     geo_restriction {
