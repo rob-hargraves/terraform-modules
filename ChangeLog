@@ -1,3 +1,6 @@
+2020-09-14  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
+	* TM-55 - Add support for extra origins to the Cloudfront module
+
 1.0.26
 ==========
 2020-07-15  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
