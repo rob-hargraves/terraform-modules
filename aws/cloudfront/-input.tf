@@ -64,6 +64,11 @@ variable "tags" {
   type    = "map"
 }
 
+variable "viewer_tls_minimum_version" {
+  default = "TLSv1.2_2018"
+  type    = "string"
+}
+
 variable "web_acl_id" {
   default = ""
   type    = "string"
