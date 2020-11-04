@@ -35,6 +35,11 @@ variable "distribution_name" {
   type = "string"
 }
 
+variable "enabled" {
+  default = true
+  type    = "string"
+}
+
 variable "extra_origins" {
   default = []
   type    = "list"
