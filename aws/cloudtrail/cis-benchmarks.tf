@@ -33,3 +33,33 @@ resource "aws_cloudwatch_metric_alarm" "unauthorized_api_calls" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 }
+
+resource "aws_cloudwatch_log_metric_filter" "console_signin_without_mfa" {
+  count = "${contains(var.cis_benchmark_alerts, "console_signin_without_mfa") ? 1 : 0}"
+
+  log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
+  name           = "Console Signin Without MFA"
+  pattern        = "{($.eventName=\"ConsoleLogin\") && ($.additionalEventData.MFAUsed !=\"Yes\")}"
+
+  metric_transformation {
+    name      = "ConsoleSigninWithoutMFA"
+    namespace = "LogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "console_signin_without_mfa" {
+  count = "${contains(var.cis_benchmark_alerts, "console_signin_without_mfa") ? 1 : 0}"
+
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
+  alarm_description   = "CIS Benchmark: Console Signin Without MFA"
+  alarm_name          = "${var.account_name}-console-signin-without-mfa"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.console_signin_without_mfa.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.console_signin_without_mfa.metric_transformation.0.namespace}"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+}
