@@ -363,3 +363,33 @@ resource "aws_cloudwatch_metric_alarm" "network_gateway_changes" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 }
+
+resource "aws_cloudwatch_log_metric_filter" "route_table_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "route_table_changes") ? 1 : 0}"
+
+  log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
+  name           = "Route Table Changes"
+  pattern        = "{($.eventName=CreateRoute) || ($.eventName=CreateRouteTable) || ($.eventName=ReplaceRoute) || ($.eventName=ReplaceRouteTableAssociation) || ($.eventName=DeleteRouteTable) || ($.eventName=DeleteRoute) || ($.eventName=DisassociateRouteTable)}"
+
+  metric_transformation {
+    name      = "RouteTableChanges"
+    namespace = "LogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "route_table_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "route_table_changes") ? 1 : 0}"
+
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
+  alarm_description   = "CIS Benchmark: Route Table Changes"
+  alarm_name          = "${var.account_name}-route-table-changes"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.route_table_changes.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.route_table_changes.metric_transformation.0.namespace}"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+}
