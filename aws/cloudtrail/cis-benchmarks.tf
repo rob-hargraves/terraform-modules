@@ -8,11 +8,11 @@ resource "aws_cloudwatch_log_metric_filter" "unauthorized_api_calls" {
   count = "${contains(var.cis_benchmark_alerts, "unauthorized_api_calls") ? 1 : 0}"
 
   log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
-  name           = "Unauthorized Api Calls"
+  name           = "Unauthorized API Calls"
   pattern        = "{($.errorCode=\"*UnauthorizedOperation\") || ($.errorCode=\"AccessDenied*\")}"
 
   metric_transformation {
-    name      = "UnauthorizedApiCalls"
+    name      = "UnauthorizedAPICalls"
     namespace = "LogMetrics"
     value     = "1"
   }
@@ -22,7 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "unauthorized_api_calls" {
   count = "${contains(var.cis_benchmark_alerts, "unauthorized_api_calls") ? 1 : 0}"
 
   alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
-  alarm_description   = "CIS Benchmark: Unauthorized Api Calls"
+  alarm_description   = "CIS Benchmark: Unauthorized API Calls"
   alarm_name          = "${var.account_name}-unauthorized-api-calls"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
