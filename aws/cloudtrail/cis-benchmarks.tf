@@ -243,3 +243,33 @@ resource "aws_cloudwatch_metric_alarm" "s3_bucket_policy_changes" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 }
+
+resource "aws_cloudwatch_log_metric_filter" "aws_config_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "aws_config_changes") ? 1 : 0}"
+
+  log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
+  name           = "AWS Config Changes"
+  pattern        = "{($.eventSource=config.amazonaws.com) && (($.eventName=StopConfigurationRecorder) || ($.eventName=DeleteDeliveryChannel) || ($.eventName=PutDeliveryChannel) || ($.eventName=PutConfigurationRecorder))}"
+
+  metric_transformation {
+    name      = "AWSConfigChanges"
+    namespace = "LogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "aws_config_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "aws_config_changes") ? 1 : 0}"
+
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
+  alarm_description   = "CIS Benchmark: AWS Config Changes"
+  alarm_name          = "${var.account_name}-aws-config-changes"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.aws_config_changes.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.aws_config_changes.metric_transformation.0.namespace}"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+}
