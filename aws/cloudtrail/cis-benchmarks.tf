@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "unauthorized_api_calls" {
   evaluation_periods  = "1"
   metric_name         = "${aws_cloudwatch_log_metric_filter.unauthorized_api_calls.metric_transformation.0.name}"
   namespace           = "${aws_cloudwatch_log_metric_filter.unauthorized_api_calls.metric_transformation.0.namespace}"
-  period              = "300"
+  period              = "60"
   statistic           = "Sum"
   threshold           = "1"
   treat_missing_data  = "notBreaching"
