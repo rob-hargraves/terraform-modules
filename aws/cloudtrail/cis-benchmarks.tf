@@ -333,3 +333,33 @@ resource "aws_cloudwatch_metric_alarm" "network_acl_changes" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 }
+
+resource "aws_cloudwatch_log_metric_filter" "network_gateway_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "network_gateway_changes") ? 1 : 0}"
+
+  log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
+  name           = "Network Gateway Changes"
+  pattern        = "{($.eventName=CreateCustomerGateway) || ($.eventName=DeleteCustomerGateway) || ($.eventName=AttachInternetGateway) || ($.eventName=CreateInternetGateway) || ($.eventName=DeleteInternetGateway) || ($.eventName=DetachInternetGateway)}"
+
+  metric_transformation {
+    name      = "NetworkGatewayChanges"
+    namespace = "LogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "network_gateway_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "network_gateway_changes") ? 1 : 0}"
+
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
+  alarm_description   = "CIS Benchmark: Network Gateway Changes"
+  alarm_name          = "${var.account_name}-network-gateway-changes"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.network_gateway_changes.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.network_gateway_changes.metric_transformation.0.namespace}"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+}
