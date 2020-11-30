@@ -153,3 +153,33 @@ resource "aws_cloudwatch_metric_alarm" "cloudtrail_changes" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 }
+
+resource "aws_cloudwatch_log_metric_filter" "console_authentication_failure" {
+  count = "${contains(var.cis_benchmark_alerts, "console_authentication_failure") ? 1 : 0}"
+
+  log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
+  name           = "Console Authentication Failure"
+  pattern        = "{($.eventName=ConsoleLogin) && ($.errorMessage=\"Failed authentication\")}"
+
+  metric_transformation {
+    name      = "ConsoleAuthenticationFailure"
+    namespace = "LogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "console_authentication_failure" {
+  count = "${contains(var.cis_benchmark_alerts, "console_authentication_failure") ? 1 : 0}"
+
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
+  alarm_description   = "CIS Benchmark: Console Authentication Failure"
+  alarm_name          = "${var.account_name}-console-authentication-failure"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.console_authentication_failure.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.console_authentication_failure.metric_transformation.0.namespace}"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+}
