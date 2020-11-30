@@ -213,3 +213,33 @@ resource "aws_cloudwatch_metric_alarm" "disable_or_delete_cmk" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 }
+
+resource "aws_cloudwatch_log_metric_filter" "s3_bucket_policy_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "s3_bucket_policy_changes") ? 1 : 0}"
+
+  log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
+  name           = "S3 Bucket Policy Changes"
+  pattern        = "{($.eventSource=s3.amazonaws.com) && (($.eventName=PutBucketAcl) || ($.eventName=PutBucketPolicy) || ($.eventName=PutBucketCors) || ($.eventName=PutBucketLifecycle) || ($.eventName=PutBucketReplication) || ($.eventName=DeleteBucketPolicy) || ($.eventName=DeleteBucketCors) || ($.eventName=DeleteBucketLifecycle) || ($.eventName=DeleteBucketReplication))}"
+
+  metric_transformation {
+    name      = "S3BucketPolicyChanges"
+    namespace = "LogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "s3_bucket_policy_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "s3_bucket_policy_changes") ? 1 : 0}"
+
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
+  alarm_description   = "CIS Benchmark: S3 Bucket Policy Changes"
+  alarm_name          = "${var.account_name}-s3-bucket-policy-changes"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.s3_bucket_policy_changes.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.s3_bucket_policy_changes.metric_transformation.0.namespace}"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+}
