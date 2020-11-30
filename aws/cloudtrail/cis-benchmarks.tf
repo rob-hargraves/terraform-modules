@@ -63,3 +63,33 @@ resource "aws_cloudwatch_metric_alarm" "console_signin_without_mfa" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 }
+
+resource "aws_cloudwatch_log_metric_filter" "root_account_usage" {
+  count = "${contains(var.cis_benchmark_alerts, "root_account_usage") ? 1 : 0}"
+
+  log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
+  name           = "Root Account Usage"
+  pattern        = "{$.userIdentity.type=\"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType !=\"AwsServiceEvent\"}"
+
+  metric_transformation {
+    name      = "RootAccountUsage"
+    namespace = "LogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "root_account_usage" {
+  count = "${contains(var.cis_benchmark_alerts, "root_account_usage") ? 1 : 0}"
+
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
+  alarm_description   = "CIS Benchmark: Root Account Usage"
+  alarm_name          = "${var.account_name}-root-account-usage"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.root_account_usage.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.root_account_usage.metric_transformation.0.namespace}"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+}
