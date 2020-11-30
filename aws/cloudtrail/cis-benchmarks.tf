@@ -303,3 +303,33 @@ resource "aws_cloudwatch_metric_alarm" "security_group_changes" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 }
+
+resource "aws_cloudwatch_log_metric_filter" "network_acl_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "network_acl_changes") ? 1 : 0}"
+
+  log_group_name = "${aws_cloudwatch_log_group.cloudtrail.name}"
+  name           = "Network ACL Changes"
+  pattern        = "{($.eventName=CreateNetworkAcl) || ($.eventName=CreateNetworkAclEntry) || ($.eventName=DeleteNetworkAcl) || ($.eventName=DeleteNetworkAclEntry) || ($.eventName=ReplaceNetworkAclEntry) || ($.eventName=ReplaceNetworkAclAssociation)}"
+
+  metric_transformation {
+    name      = "NetworkACLChanges"
+    namespace = "LogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "network_acl_changes" {
+  count = "${contains(var.cis_benchmark_alerts, "network_acl_changes") ? 1 : 0}"
+
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
+  alarm_description   = "CIS Benchmark: Network ACL Changes"
+  alarm_name          = "${var.account_name}-network-acl-changes"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.network_acl_changes.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.network_acl_changes.metric_transformation.0.namespace}"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+}
