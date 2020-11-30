@@ -21,6 +21,7 @@ resource "aws_cloudwatch_log_metric_filter" "unauthorized_api_calls" {
 resource "aws_cloudwatch_metric_alarm" "unauthorized_api_calls" {
   count = "${contains(var.cis_benchmark_alerts, "unauthorized_api_calls") ? 1 : 0}"
 
+  alarm_actions       = ["${aws_sns_topic.cis_benchmarks.arn}"]
   alarm_description   = "CIS Benchmark: Unauthorized Api Calls"
   alarm_name          = "${var.account_name}-unauthorized-api-calls"
   comparison_operator = "GreaterThanOrEqualToThreshold"
