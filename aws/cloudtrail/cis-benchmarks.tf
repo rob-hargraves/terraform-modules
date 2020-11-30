@@ -31,4 +31,5 @@ resource "aws_cloudwatch_metric_alarm" "unauthorized_api_calls" {
   period              = "300"
   statistic           = "Sum"
   threshold           = "1"
+  treat_missing_data  = "notBreaching"
 }
