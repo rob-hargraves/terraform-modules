@@ -44,7 +44,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   depends_on              = [
     "aws_lambda_permission.redirector"
   ]
-  enabled                 = true
+  enabled                 = "${var.enabled}"
   is_ipv6_enabled         = true
   lifecycle {
     ignore_changes = [
