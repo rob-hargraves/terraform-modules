@@ -71,5 +71,6 @@ resource "aws_lambda_permission" "redirector" {
   action        = "lambda:GetFunction"
   function_name = "${aws_lambda_function.redirector.function_name}"
   principal     = "edgelambda.amazonaws.com"
+  provider      = "aws.lambda_edge_region"
   statement_id  = "AllowExecutionFromCloudFront"
 }
