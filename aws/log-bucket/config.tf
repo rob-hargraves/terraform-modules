@@ -64,6 +64,45 @@ data "aws_iam_policy_document" "log" {
     ]
     sid = "DenyUnsecuredTransport"
   }
+
+  statement {
+    actions   = [
+      "s3:PutObject"
+    ]
+    condition {
+      test     = "StringEquals"
+      values   = [
+        "bucket-owner-full-control"
+      ]
+      variable = "s3:x-amz-acl"
+    }
+    principals {
+      identifiers = [
+        "delivery.logs.amazonaws.com"
+      ]
+      type = "Service"
+    }
+    resources = [
+      "${aws_s3_bucket.log.arn}/elb/*"
+    ]
+    sid       = "AWSLogDeliveryWrite"
+  }
+
+  statement {
+    actions   = [
+      "s3:GetBucketAcl"
+    ]
+    principals {
+      identifiers = [
+        "delivery.logs.amazonaws.com"
+      ]
+      type = "Service"
+    }
+    resources = [
+      "${aws_s3_bucket.log.arn}"
+    ]
+    sid       = "AWSLogDeliveryAclCheck"
+  }
 }
 
 resource "aws_s3_bucket_policy" "log" {

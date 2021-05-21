@@ -1,3 +1,6 @@
+2021-05-21  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
+	* TM-83 - Update S3 permissions in the log-bucket module to allow network lb's to write logs
+
 1.0.28
 ==========
 2020-12-14  Rob Hargraves <rob.hargraves@helplightning.com> - Merged by Marcus Dillavou  <marcus.dillavou@helplightning.com>
