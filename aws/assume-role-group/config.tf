@@ -3,7 +3,7 @@ resource "aws_iam_group" "assume_role" {
 }
 
 data "aws_iam_policy_document" "group" {
-  "statement" {
+  statement {
     actions = [
       "sts:AssumeRole"
     ]
