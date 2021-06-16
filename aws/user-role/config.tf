@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "role" {
-  "statement" {
+  statement {
     actions = [
       "sts:AssumeRole"
     ]
