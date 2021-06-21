@@ -23,7 +23,7 @@ variable "compress" {
 
 variable "custom_error_responses" {
   default = []
-  type    = list(string)
+  type    = any
 }
 
 variable "default_root_object" {
