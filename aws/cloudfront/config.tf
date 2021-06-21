@@ -62,7 +62,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     prefix          = "cloudfront/${var.distribution_name}/"
   }
   dynamic "ordered_cache_behavior" {
-    for_each = [var.ordered_cache_behaviors]
+    for_each = var.ordered_cache_behaviors
     content {
       # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
       # which keys might be set in maps assigned here, so it has
