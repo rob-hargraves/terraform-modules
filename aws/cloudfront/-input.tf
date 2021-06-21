@@ -51,7 +51,7 @@ variable "log_bucket" {
 
 variable "ordered_cache_behaviors" {
   default = []
-  type    = list(string)
+  type    = any
 }
 
 variable "origin_bucket_cors" {
