@@ -42,7 +42,7 @@ variable "enabled" {
 
 variable "extra_origins" {
   default = []
-  type    = list(string)
+  type    = any
 }
 
 variable "log_bucket" {
@@ -56,7 +56,7 @@ variable "ordered_cache_behaviors" {
 
 variable "origin_bucket_cors" {
   default = []
-  type    = list(string)
+  type    = any
 }
 
 variable "price_class" {
