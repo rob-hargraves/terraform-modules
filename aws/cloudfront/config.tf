@@ -117,7 +117,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     }
   }
   dynamic "origin" {
-    for_each = [var.extra_origins]
+    for_each = var.extra_origins
     content {
       # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
       # which keys might be set in maps assigned here, so it has
