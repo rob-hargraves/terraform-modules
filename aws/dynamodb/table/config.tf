@@ -1,19 +1,14 @@
 resource "aws_dynamodb_table" "table" {
   dynamic "attribute" {
-    for_each = [var.attributes]
+    for_each = var.attributes
     content {
-      # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
-      # which keys might be set in maps assigned here, so it has
-      # produced a comprehensive set here. Consider simplifying
-      # this after confirming which keys can be set in practice.
-
       name = attribute.value.name
       type = attribute.value.type
     }
   }
   billing_mode = var.billing_mode
   dynamic "global_secondary_index" {
-    for_each = [var.global_secondary_indexes]
+    for_each = var.global_secondary_indexes
     content {
       # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
       # which keys might be set in maps assigned here, so it has
@@ -41,7 +36,7 @@ resource "aws_dynamodb_table" "table" {
     prevent_destroy = true
   }
   dynamic "local_secondary_index" {
-    for_each = [var.local_secondary_indexes]
+    for_each = var.local_secondary_indexes
     content {
       # TF-UPGRADE-TODO: The automatic upgrade tool can't predict
       # which keys might be set in maps assigned here, so it has

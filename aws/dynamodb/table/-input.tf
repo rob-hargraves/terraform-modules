@@ -1,5 +1,8 @@
 variable "attributes" {
-  type = list(string)
+  type = list(object({
+    name = string
+    type = string
+  }))
 }
 
 variable "autoscaling_service_role_arn" {
@@ -13,7 +16,7 @@ variable "billing_mode" {
 
 variable "global_secondary_indexes" {
   default = []
-  type    = list(string)
+  type    = list(any)
 }
 
 variable "global_secondary_indexes_count" {
@@ -27,7 +30,7 @@ variable "hash_key" {
 
 variable "local_secondary_indexes" {
   default = []
-  type    = list(string)
+  type    = list(any)
 }
 
 variable "name" {
