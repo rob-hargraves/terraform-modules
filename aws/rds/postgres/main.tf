@@ -118,4 +118,10 @@ resource "aws_db_instance" "rds" {
   vpc_security_group_ids = [
     aws_security_group.rds.id,
   ]
+
+  lifecycle {
+    ignore_changes = [
+      instance_class,
+    ]
+  }
 }
