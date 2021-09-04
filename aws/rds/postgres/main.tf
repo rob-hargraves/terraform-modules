@@ -104,6 +104,9 @@ resource "aws_db_instance" "rds" {
   kms_key_id                 = aws_kms_key.rds.arn
   lifecycle {
     prevent_destroy = true
+    ignore_changes = [
+      instance_class,
+    ]
   }
   monitoring_interval  = 60
   monitoring_role_arn  = aws_iam_role.monitoring.arn
@@ -118,10 +121,4 @@ resource "aws_db_instance" "rds" {
   vpc_security_group_ids = [
     aws_security_group.rds.id,
   ]
-
-  lifecycle {
-    ignore_changes = [
-      instance_class,
-    ]
-  }
 }
