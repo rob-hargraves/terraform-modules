@@ -59,6 +59,12 @@ variable "origin_bucket_cors" {
   type    = any
 }
 
+variable "use_legacy_acls" {
+  default     = false
+  type        = bool
+  description = "By default, ACLs are disabled on the origin bucket. Set this to true to use the private canned ACL."
+}
+
 variable "price_class" {
   default = "PriceClass_100"
   type    = string
