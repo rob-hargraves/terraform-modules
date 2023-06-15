@@ -14,7 +14,6 @@ resource "aws_s3_bucket" "origin" {
     prevent_destroy = true
     ignore_changes = [
       logging,
-      grant,
     ]
   }
   server_side_encryption_configuration {
@@ -35,21 +34,6 @@ resource "aws_s3_bucket_logging" "origin" {
 
   target_bucket = data.aws_s3_bucket.log_bucket.id
   target_prefix = "s3/${var.distribution_name}/"
-}
-
-resource "aws_s3_bucket_ownership_controls" "origin" {
-  bucket = aws_s3_bucket.origin.id
-
-  rule {
-    object_ownership = var.use_legacy_acls ? "ObjectWriter" : "BucketOwnerEnforced"
-  }
-}
-
-resource "aws_s3_bucket_acl" "origin" {
-  count = var.use_legacy_acls ? 1 : 0
-
-  bucket = aws_s3_bucket.origin.id
-  acl    = "private"
 }
 
 data "aws_iam_policy_document" "origin_bucket_policy" {
