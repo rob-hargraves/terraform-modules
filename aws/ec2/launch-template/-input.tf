@@ -36,6 +36,17 @@ variable "key_name" {
   type    = string
 }
 
+variable "metadata_options" {
+  type = object({
+    http_endpoint               = optional(string)
+    http_protocol_ipv6          = optional(string)
+    http_put_response_hop_limit = optional(number)
+    http_tokens                 = optional(string)
+    instance_metadata_tags      = optional(string)
+  })
+  default = null
+}
+
 variable "name" {
   type = string
 }
