@@ -23,6 +23,11 @@ variable "block_device_mappings" {
   default = []
 }
 
+variable "description" {
+  default = null
+  type    = string
+}
+
 variable "image_id" {
   type = string
 }

@@ -40,6 +40,7 @@ resource "aws_iam_instance_profile" "launch_template" {
 
 resource "aws_launch_template" "launch_template" {
   name                   = var.name
+  description            = var.description
   ebs_optimized          = contains(local.ebs_optimized_instance_types, var.instance_type)
   image_id               = var.image_id
   instance_type          = var.instance_type
